@@ -3,6 +3,7 @@ import 'package:ah_test/core/widgets/error_widget.dart';
 import 'package:ah_test/core/widgets/initial_widget.dart';
 import 'package:ah_test/core/widgets/loading_widget.dart';
 import 'package:ah_test/features/artifact_list/domain/usecases/get_artifacts_usecase.dart';
+import 'package:ah_test/features/artifact_list/presentation/widgets/artifact_list_stateless_widget.dart';
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

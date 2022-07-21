@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:convert';
 
 import 'package:ah_test/core/usecases/usecase.dart';
@@ -15,30 +17,46 @@ import '../../../../fixtures/fixture_reader.dart';
 class MockGetArtifactsUsecase extends Mock implements GetArtifactsUsecase {}
 
 void main() {
-  test('initialState should be Empty', () {
-    MockGetArtifactsUsecase mockGetArtifactsUsecase = MockGetArtifactsUsecase();
-    ArtifactListCubit cubit = ArtifactListCubit(mockGetArtifactsUsecase);
-    expect(cubit.state, equals(ArtifactListInitial()));
+  MockGetArtifactsUsecase mockGetArtifactsUsecase;
+  ArtifactListCubit cubit;
+
+  setUp(() {
+    mockGetArtifactsUsecase = MockGetArtifactsUsecase();
+    cubit = ArtifactListCubit(mockGetArtifactsUsecase);
   });
 
   group('GetArtifacts', () {
-    final artifactsModels = ArtifactModel.listFromJson(
-        json.decode(fixture('crypto_currencies.json')));
+    test('initialState should be Empty', () {
+      expect(cubit.state, equals(ArtifactListInitial()));
+    });
+  });
+
+  group('GetArtifacts', () {
+    var fileContent = fixture('artifacts.json');
+    final artifactsModels =
+        ArtifactModel.listFromJson(json.decode(fileContent));
     final List<ArtifactEntity> artifacts = artifactsModels;
 
     test('should get data from usecase', () async {
-      MockGetArtifactsUsecase mockGetArtifactsUsecase =
-          MockGetArtifactsUsecase();
-      ArtifactListCubit cubit = ArtifactListCubit(mockGetArtifactsUsecase);
-
       when(mockGetArtifactsUsecase(Params(0, 10)))
           .thenAnswer((_) async => Right(artifacts));
 
-      cubit.getArtifactsUsecase(Params(0, 10));
+      cubit.getInitialArtifactList(0);
 
       await untilCalled(mockGetArtifactsUsecase(Params(0, 10)));
 
-      verify(mockGetArtifactsUsecase(Params(0, 10)));
+      verify(mockGetArtifactsUsecase(Params(0, 10))).called(greaterThan(0));
+    });
+
+    test('Get Paginated Artifact List', () async {
+      when(mockGetArtifactsUsecase(Params(0, 10)))
+          .thenAnswer((_) async => Right(artifacts));
+
+      var result = cubit.getPaginatedArtifactList(0);
+
+      await untilCalled(mockGetArtifactsUsecase(Params(0, 10)));
+
+      verify(mockGetArtifactsUsecase(Params(0, 10))).called(greaterThan(0));
     });
   });
 }

@@ -33,48 +33,50 @@ class _ArtifactListViewState extends State<ArtifactListView> {
       _artifacts.addAll(widget.artifacts);
     });
     return ListView.builder(
-      itemBuilder: (BuildContext context, int index) => Card(
-        elevation: 0,
-        child: GestureDetector(
-            onTap: () {
-              //Perform your logic here
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ArtifactDetailUi(
-                        selectedArtifact: _artifacts.elementAt(index))),
-              );
-            },
-            child: Stack(
-              alignment: Alignment.center,
-              children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image:
-                          NetworkImage(_artifacts.elementAt(index).headerImage),
-                      fit: BoxFit.fitWidth,
-                      alignment: Alignment.center,
+      itemBuilder: (BuildContext context, int index) {
+        return Card(
+          elevation: 0,
+          child: GestureDetector(
+              onTap: () {
+                //Perform your logic here
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ArtifactDetailUi(
+                          selectedArtifact: _artifacts.elementAt(index))),
+                );
+              },
+              child: Stack(
+                alignment: Alignment.center,
+                children: <Widget>[
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(
+                            _artifacts.elementAt(index).headerImage),
+                        fit: BoxFit.fitWidth,
+                        alignment: Alignment.center,
+                      ),
+                    ),
+                  ), //Container
+                  Positioned(
+                    width: MediaQuery.of(context).size.width,
+                    child: Text(
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                      textAlign: TextAlign.center,
+                      _artifacts.elementAt(index).title,
                     ),
                   ),
-                ), //Container
-                Positioned(
-                  width: MediaQuery.of(context).size.width,
-                  child: Text(
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                    textAlign: TextAlign.center,
-                    _artifacts.elementAt(index).title,
-                  ),
-                ),
-              ],
-            )),
-      ),
+                ],
+              )),
+        );
+      },
       itemCount: _artifacts.length,
     );
   }

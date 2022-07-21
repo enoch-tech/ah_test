@@ -8,6 +8,7 @@ import 'package:ah_test/features/artifact_list/domain/usecases/get_artifacts_use
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+
 import '../../../../fixtures/fixture_reader.dart';
 
 class MockArtifactRepository extends Mock implements ArtifactRepository {}
@@ -15,8 +16,8 @@ class MockArtifactRepository extends Mock implements ArtifactRepository {}
 void main() {
   GetArtifactsUsecase usecase;
   MockArtifactRepository mockArtifactRepository;
-  final tCryptoCurrencyModels = ArtifactModel.listFromJson(
-      json.decode(fixture('crypto_currencies.json')));
+  final tCryptoCurrencyModels =
+      ArtifactModel.listFromJson(json.decode(fixture('artifacts.json')));
   final List<ArtifactEntity> tCryptoCurrencies = tCryptoCurrencyModels;
   setUp(() {
     mockArtifactRepository = MockArtifactRepository();
@@ -24,10 +25,12 @@ void main() {
   });
 
   test(
-    'Should get crypto currencies list from the repository',
+    'Should get artifacts list from the repository',
     () async {
       mockArtifactRepository = MockArtifactRepository();
+
       usecase = GetArtifactsUsecase(mockArtifactRepository);
+
       when(mockArtifactRepository.getArtifacts(0, 10))
           .thenAnswer((_) async => Right(tCryptoCurrencies));
 

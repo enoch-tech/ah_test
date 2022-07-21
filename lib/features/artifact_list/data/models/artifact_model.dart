@@ -43,13 +43,6 @@ class ArtifactModel extends ArtifactEntity {
     return artifact;
   }
 
-  // objectNumber: json['objectNumber'],
-  //     artObjects: json['objectNumber'],
-  //     symbol: json['symbol'],
-  //     name: json['name'],
-  //     unitPrice: (json['quote']['USD']['price'] as num).toDouble(),
-  //     lastUpdate: DateTime.tryParse(json['quote']['USD']['last_updated'])
-
   static List<ArtifactModel> listFromJson(Map<String, dynamic> json) {
     List<ArtifactModel> list = [];
     final jsonList = json['artObjects'];
@@ -62,8 +55,4 @@ class ArtifactModel extends ArtifactEntity {
     }
     return list;
   }
-
-  // Map<String, dynamic> toJson() {
-  //   return {'id': id, 'symbol': symbol, 'name': name};
-  // }
 }
