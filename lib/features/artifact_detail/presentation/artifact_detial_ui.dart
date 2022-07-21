@@ -35,8 +35,19 @@ class ArtifactDetailUi extends StatelessWidget {
                     const Text('Some errors occurred!'),
               ),
             ),
-            Text(selectedArtifact.title),
-            Text(selectedArtifact.longTitle)
+            Column(
+              children: [
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                    child: Text(selectedArtifact.title)),
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                    child: Text(selectedArtifact.longTitle)),
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                    child: Text(selectedArtifact.principalOrFirstMaker)),
+              ],
+            )
           ],
         ),
       ),

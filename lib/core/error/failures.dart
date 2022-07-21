@@ -18,3 +18,8 @@ class NetworkFailure extends Failure {
   @override
   List<Object> get props => ['Network Failure'];
 }
+
+class InvalidParamFailure extends Failure {
+  @override
+  List<Object> get props => ['Provided value is invalid'];
+}

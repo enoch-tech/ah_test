@@ -1,9 +1,10 @@
+import 'package:data_connection_checker/data_connection_checker.dart';
+import 'package:get_it/get_it.dart';
+import 'package:http/http.dart';
+
 import 'package:ah_test/features/artifact_list/data/datasources/artifact_remote_datasource.dart';
 import 'package:ah_test/features/artifact_list/domain/repositories/artifact_repository.dart';
 import 'package:ah_test/features/artifact_list/domain/usecases/get_artifacts_usecase.dart';
-import 'package:get_it/get_it.dart';
-import 'package:http/http.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 import 'core/network/network_info.dart';
 import 'features/artifact_list/data/repositories/artifact_repository_impl.dart';
@@ -32,6 +33,6 @@ void init() async {
   getIt.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(getIt()));
 
   getIt.registerLazySingleton<Client>(() => Client());
-  getIt.registerLazySingleton<InternetConnectionChecker>(
-      () => InternetConnectionChecker());
+  getIt.registerLazySingleton<DataConnectionChecker>(
+      () => DataConnectionChecker());
 }

@@ -1,3 +1,4 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'features/artifact_list/presentation/cubit/artifact_list_cubit.dart';
@@ -10,21 +11,19 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'AH Test App',
-        home: MultiBlocProvider(
-          providers: [
-            BlocProvider<ArtifactListCubit>(
-              create: (BuildContext context) => ArtifactListCubit(getIt()),
-            ),
-            // BlocProvider<CryptoCurrencyDetailCubit>(
-            //   create: (BuildContext context) => CryptoCurrencyDetailCubit(sl()),
-            // ),
-          ],
-          child: const ArtifactListViewController(),
-        ));
+      title: 'AH Test App',
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider<ArtifactListCubit>(
+            create: (BuildContext context) => ArtifactListCubit(getIt()),
+          ),
+        ],
+        child: const ArtifactListViewController(),
+      ),
+    );
   }
 }

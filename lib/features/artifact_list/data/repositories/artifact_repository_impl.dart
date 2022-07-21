@@ -19,6 +19,9 @@ class ArtifactRepositoryImpl implements ArtifactRepository {
   Future<Either<Failure, List<ArtifactEntity>>> getArtifacts(
       int page, int count) async {
     try {
+      if (count <= 0) {
+        return Left(InvalidParamFailure());
+      }
       if (await networkInfo.isConnected) {
         try {
           final remoteData = await remoteDataSource.getRemoteData(page, count);
