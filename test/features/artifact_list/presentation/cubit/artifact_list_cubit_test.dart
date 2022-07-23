@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:convert';
 
 import 'package:ah_test/core/usecases/usecase.dart';
@@ -10,19 +8,24 @@ import 'package:ah_test/features/artifact_list/presentation/cubit/artifact_list_
 import 'package:ah_test/features/artifact_list/presentation/cubit/artifact_list_state.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+
+import 'package:mocktail/mocktail.dart';
 
 import '../../../../fixtures/fixture_reader.dart';
+import 'artifact_list_cubit_test.mocks.dart';
 
 class MockGetArtifactsUsecase extends Mock implements GetArtifactsUsecase {}
 
 void main() {
-  MockGetArtifactsUsecase mockGetArtifactsUsecase;
-  ArtifactListCubit cubit;
+  late MockGetArtifactsUsecase mockGetArtifactsUsecase;
+  late ArtifactListCubit cubit;
+  late List<ArtifactEntity> artifacts;
 
   setUp(() {
     mockGetArtifactsUsecase = MockGetArtifactsUsecase();
     cubit = ArtifactListCubit(mockGetArtifactsUsecase);
+    var fileContent = fixture('artifacts.json');
+    artifacts = ArtifactModel.listFromJson(json.decode(fileContent));
   });
 
   group('GetArtifacts', () {
@@ -32,31 +35,37 @@ void main() {
   });
 
   group('GetArtifacts', () {
-    var fileContent = fixture('artifacts.json');
-    final artifactsModels =
-        ArtifactModel.listFromJson(json.decode(fileContent));
-    final List<ArtifactEntity> artifacts = artifactsModels;
-
-    test('should get data from usecase', () async {
-      when(mockGetArtifactsUsecase(Params(0, 10)))
+    setUp(() {
+      when(() => mockGetArtifactsUsecase(Params(0, 10)))
           .thenAnswer((_) async => Right(artifacts));
-
-      cubit.getInitialArtifactList(0);
-
-      await untilCalled(mockGetArtifactsUsecase(Params(0, 10)));
-
-      verify(mockGetArtifactsUsecase(Params(0, 10))).called(greaterThan(0));
     });
 
+    // test('should emit [Error] when the inpus is invalid.', () async* {
+    //   //arrange
+    //   when(mockInputConverter.stringToUnsignedInteger(any))
+    //       .thenReturn(Left(InvalidInputFailure()));
+
+    //   final expected = [
+    //     Empty(),
+    //     Error(message: INVALID_INPUT_FAILURE_MESSAGE),
+    //   ];
+    //   //assert later
+    //   expectLater(cubit, emitsInOrder(expected));
+
+    //   //act
+    //   bloc.add(GetTriviaForConcreteNumber(tNumberString));
+    // });
+
     test('Get Paginated Artifact List', () async {
-      when(mockGetArtifactsUsecase(Params(0, 10)))
+      when(() => mockGetArtifactsUsecase(Params(0, 10)))
           .thenAnswer((_) async => Right(artifacts));
 
       var result = cubit.getPaginatedArtifactList(0);
 
-      await untilCalled(mockGetArtifactsUsecase(Params(0, 10)));
+      await untilCalled(() => mockGetArtifactsUsecase(Params(0, 10)));
 
-      verify(mockGetArtifactsUsecase(Params(0, 10))).called(greaterThan(0));
+      verify(() => mockGetArtifactsUsecase(Params(0, 10)))
+          .called(greaterThan(0));
     });
   });
 }

@@ -12,17 +12,16 @@ class ArtifactRepositoryImpl implements ArtifactRepository {
   final ArtifactRemoteDataSource remoteDataSource;
   final NetworkInfo networkInfo;
 
-  ArtifactRepositoryImpl(
-      {required this.remoteDataSource, required this.networkInfo});
+  ArtifactRepositoryImpl(this.remoteDataSource, this.networkInfo);
 
   @override
   Future<Either<Failure, List<ArtifactEntity>>> getArtifacts(
       int page, int count) async {
     try {
-      if (count <= 0) {
+      if (page < 0 || count < 0) {
         return Left(InvalidParamFailure());
       }
-      if (await networkInfo.isConnected) {
+      if (await networkInfo.isConnected()) {
         try {
           final remoteData = await remoteDataSource.getRemoteData(page, count);
           return Right(remoteData);

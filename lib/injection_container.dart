@@ -22,8 +22,8 @@ void init() async {
       () => GetArtifactsUsecase(getIt()));
 
   // Repositories
-  getIt.registerLazySingleton<ArtifactRepository>(() =>
-      ArtifactRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()));
+  getIt.registerLazySingleton<ArtifactRepository>(
+      () => ArtifactRepositoryImpl(getIt(), getIt()));
 
   // data source
   getIt.registerLazySingleton<ArtifactRemoteDataSource>(

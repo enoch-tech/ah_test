@@ -21,6 +21,9 @@ class GetArtifactsUsecase implements UseCase<List<ArtifactEntity>, Params> {
 
   @override
   Future<Either<Failure, List<ArtifactEntity>>> call(Params params) async {
+    if (params._page < 0 || params._count < 0) {
+      return Left(InvalidParamFailure());
+    }
     return repository.getArtifacts(params._page, params._count);
   }
 }

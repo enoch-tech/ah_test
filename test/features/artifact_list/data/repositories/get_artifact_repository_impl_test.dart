@@ -1,13 +1,13 @@
 import 'dart:convert';
 
+import 'package:ah_test/core/error/failures.dart';
 import 'package:ah_test/core/network/network_info.dart';
 import 'package:ah_test/features/artifact_list/data/datasources/artifact_remote_datasource.dart';
 import 'package:ah_test/features/artifact_list/data/models/artifact_model.dart';
 import 'package:ah_test/features/artifact_list/data/repositories/artifact_repository_impl.dart';
-import 'package:ah_test/features/artifact_list/domain/entities/artifact_entity.dart';
-import 'package:dartz/dartz.dart';
+
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../../../fixtures/fixture_reader.dart';
 
@@ -16,122 +16,78 @@ class MockRemoteDataSource extends Mock implements ArtifactRemoteDataSource {}
 class MockNetworkInfo extends Mock implements NetworkInfo {}
 
 void main() {
-  ArtifactRepositoryImpl repository;
-  MockRemoteDataSource mockRemoteDataSource;
-  MockNetworkInfo mockNetworkInfo;
-
+  late ArtifactRepositoryImpl repository;
+  late MockRemoteDataSource mockRemoteDataSource;
+  late MockNetworkInfo mockNetworkInfo;
   setUp(() {
     mockRemoteDataSource = MockRemoteDataSource();
     mockNetworkInfo = MockNetworkInfo();
-    repository = ArtifactRepositoryImpl(
-        remoteDataSource: mockRemoteDataSource, networkInfo: mockNetworkInfo);
+    repository = ArtifactRepositoryImpl(mockRemoteDataSource, mockNetworkInfo);
   });
 
-  void runTestOnline(Function body) {
-    group('Device is online', () {
-      setUp(() {
-        mockNetworkInfo = MockNetworkInfo();
-        when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
-      });
-      body();
-    });
-  }
+  group('getting Artifacts', () {
+    var tArtifact;
+    setUp(() {
+      //arrange
+      tArtifact =
+          ArtifactModel.listFromJson(json.decode(fixture('artifacts.json')));
 
-  void runTestOffline(Function body) {
-    group('Device is offline', () {
-      setUp(() {
-        mockNetworkInfo = MockNetworkInfo();
-        when(mockNetworkInfo.isConnected).thenAnswer((_) async => false);
-      });
-      body();
+      when(() => mockNetworkInfo.isConnected()).thenAnswer((_) async => true);
+      when(() => mockRemoteDataSource.getRemoteData(0, 10))
+          .thenAnswer((_) async => tArtifact);
     });
-  }
-
-  group('Is Device Online', () {
     test(
       'Should check if the device is online',
       () async {
-        //arange
-        mockNetworkInfo = MockNetworkInfo();
-        when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
-
-        mockRemoteDataSource = MockRemoteDataSource();
-        mockNetworkInfo = MockNetworkInfo();
-        repository = ArtifactRepositoryImpl(
-            remoteDataSource: mockRemoteDataSource,
-            networkInfo: mockNetworkInfo);
         //act
-        repository.getArtifacts(0, 10);
+        await repository.getArtifacts(0, 10);
 
         //assert
-        verifyNever(mockNetworkInfo.isConnected);
+        verify(() => mockNetworkInfo.isConnected());
+        verify(() => mockRemoteDataSource.getRemoteData(0, 10));
+      },
+    );
+
+    test(
+      'Should return data is device is online and API call is correct',
+      () async {
+        //act
+        final actual = (await repository.getArtifacts(0, 10));
+
+        //assert
+        verify(() => mockNetworkInfo.isConnected());
+        verify(() => mockRemoteDataSource.getRemoteData(0, 10));
+        actual.fold((l) => {}, (r) => expect(tArtifact, r));
       },
     );
   });
 
-  runTestOnline(() {
-    final tArtifactModels = ArtifactModel.listFromJson(
-        json.decode(fixture('crypto_currencies.json')));
-    final List<ArtifactEntity> tArtifacts = tArtifactModels;
+  group('getting error/exceptions', () {
+    var tArtifact;
+    setUp(() {
+      //arrange
+      tArtifact =
+          ArtifactModel.listFromJson(json.decode(fixture('artifacts.json')));
+
+      when(() => mockNetworkInfo.isConnected()).thenAnswer((_) async => false);
+      when(() => mockRemoteDataSource.getRemoteData(0, 10))
+          .thenAnswer((_) async => tArtifact);
+    });
 
     test(
-      'Should return remote data when the call to remote data source is successful',
+      'Should return failure if the device is offline',
       () async {
-        //arange
-        mockNetworkInfo = MockNetworkInfo();
-        mockRemoteDataSource = MockRemoteDataSource();
-        when(mockRemoteDataSource.getRemoteData(0, 10))
-            .thenAnswer((_) async => tArtifactModels);
-
         //act
-        repository = ArtifactRepositoryImpl(
-            remoteDataSource: mockRemoteDataSource,
-            networkInfo: mockNetworkInfo);
-        final result = await repository.getArtifacts(0, 10);
+        await repository.getArtifacts(0, 10);
 
         //assert
-        verify(mockRemoteDataSource.getRemoteData(0, 10));
-        expect(result, equals(Right(tArtifacts)));
+        final actual = (await repository.getArtifacts(0, 10));
+
+        //assert
+        verify(() => mockNetworkInfo.isConnected());
+
+        actual.fold((l) => {expect(l, equals(NetworkFailure()))}, (r) => {});
       },
     );
-
-//   runTestOffline(() {
-//     final tArtifactModels = CryptoCurrencyModel.listFromJson(
-//         json.decode(fixture('crypto_currencies.json')));
-//     final List<CryptoCurrency> tCryptoCurrencies = tArtifactModels;
-
-//     // test(
-//     //   'Should return last localy cached data when the cached data is availabale',
-//     //   () async {
-//     //     //arange
-//     //     when(mockLocalDataSource.getCachedData())
-//     //         .thenAnswer((_) async => tArtifactModels);
-
-//     //     //act
-//     //     final result = await repository.getCryptoCurrencies();
-
-//     //     //assert
-//     //     verifyZeroInteractions(mockRemoteDataSource);
-//     //     verify(mockLocalDataSource.getCachedData());
-//     //     expect(result, equals(Right(tCryptoCurrencies)));
-//     //   },
-//     // );
-
-//   //   test(
-//   //     'Should return CacheFailure when the cached data is not availabale',
-//   //     () async {
-//   //       //arange
-//   //       when(mockLocalDataSource.getCachedData()).thenThrow(CacheException());
-
-//   //       //act
-//   //       final result = await repository.getCryptoCurrencies();
-
-//   //       //assert
-//   //       verifyZeroInteractions(mockRemoteDataSource);
-//   //       verify(mockLocalDataSource.getCachedData());
-//   //       expect(result, equals(Left(CacheFailure())));
-//   //     },
-//   //   );
-//   // });
   });
 }
