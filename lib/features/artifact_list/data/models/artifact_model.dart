@@ -34,11 +34,15 @@ class ArtifactModel extends ArtifactEntity {
       title: json['title'] ?? "",
       longTitle: json['longTitle'] ?? "",
       principalOrFirstMaker: json['principalOrFirstMaker'] ?? "",
-      webImage: json['webImage']['url'] ?? "",
-      headerImage: json['headerImage']['url'] ?? "",
+      webImage: json['webImage'] != null
+          ? json['webImage']['url'] ?? "https://img.icons8.com/search"
+          : "https://img.icons8.com/search",
+      headerImage: json['headerImage'] != null
+          ? json['headerImage']['url'] ?? "https://img.icons8.com/search"
+          : "https://img.icons8.com/search",
       productionPlaces: json['productionPlaces'] ?? "",
-      hasImage: json['hasImage'] ?? "",
-      showImage: json['showImage'] ?? "",
+      hasImage: json['hasImage'] ?? false,
+      showImage: json['showImage'] ?? false,
     );
     return artifact;
   }

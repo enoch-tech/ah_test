@@ -27,7 +27,8 @@ class ArtifactRemoteDataSourceImpl implements ArtifactRemoteDataSource {
       var queryParameters = {
         'key': Constants.API_KEY,
         'p': page.toString(),
-        'ps': count.toString()
+        'ps': count.toString(),
+        's': Constants.sortByArtist
       };
       final Uri uri = Uri.parse(
               Constants.BASE_URL + Constants.API_EN_COLLECTION) // parse string
