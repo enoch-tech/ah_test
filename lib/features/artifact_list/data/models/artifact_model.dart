@@ -30,15 +30,15 @@ class ArtifactModel extends ArtifactEntity {
     // todo i want to put data checks while reading data.
 
     var artifact = ArtifactModel(
-      objectNumber: json['objectNumber'],
-      title: json['title'],
-      longTitle: json['longTitle'],
-      principalOrFirstMaker: json['principalOrFirstMaker'],
-      webImage: json['webImage']['url'],
-      headerImage: json['headerImage']['url'],
-      productionPlaces: json['productionPlaces'],
-      hasImage: json['hasImage'],
-      showImage: json['showImage'],
+      objectNumber: json['objectNumber'] ?? "",
+      title: json['title'] ?? "",
+      longTitle: json['longTitle'] ?? "",
+      principalOrFirstMaker: json['principalOrFirstMaker'] ?? "",
+      webImage: json['webImage']['url'] ?? "",
+      headerImage: json['headerImage']['url'] ?? "",
+      productionPlaces: json['productionPlaces'] ?? "",
+      hasImage: json['hasImage'] ?? "",
+      showImage: json['showImage'] ?? "",
     );
     return artifact;
   }

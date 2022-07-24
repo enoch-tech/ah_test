@@ -6,11 +6,12 @@ import 'artifact_list_state.dart';
 
 class ArtifactListCubit extends Cubit<ArtifactListState> {
   final GetArtifactsUsecase getArtifactsUsecase;
-
   ArtifactListCubit(this.getArtifactsUsecase) : super(ArtifactListInitial());
 
   Future<void> getPaginatedArtifactList(page,
       {count = Constants.artifactsPerPage}) async {
+    if (page < 0 || count < 0) emit(const ArtifactListError(''));
+
     var p = Params(page, count);
     try {
       final artifactResponse = await getArtifactsUsecase(p);
@@ -25,6 +26,7 @@ class ArtifactListCubit extends Cubit<ArtifactListState> {
 
   Future<void> getInitialArtifactList(page,
       {count = Constants.artifactsPerPage}) async {
+    if (page < 0 || count < 0) emit(const ArtifactListError(''));
     Params p = Params(page, count);
     try {
       emit(const ArtifactListLoading());

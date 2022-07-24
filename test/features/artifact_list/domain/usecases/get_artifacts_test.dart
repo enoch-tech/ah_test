@@ -9,9 +9,7 @@ import 'package:ah_test/features/artifact_list/domain/usecases/get_artifacts_use
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-
 import '../../../../fixtures/fixture_reader.dart';
-import 'get_artifacts_test.mocks.dart';
 
 class MockArtifactRepository extends Mock implements ArtifactRepository {}
 
@@ -26,6 +24,7 @@ void main() {
     mockArtifactRepository = MockArtifactRepository();
     usecase = GetArtifactsUsecase(mockArtifactRepository);
   });
+
   group(
     "get artifact usecase",
     (() {
@@ -60,8 +59,6 @@ void main() {
           final result = await usecase(Params(-1, -10));
 
           expect(result, Left(InvalidParamFailure())); // actual , expected
-
-          //verify(() => mockArtifactRepository.getArtifacts(-1, -10));
 
           verifyNoMoreInteractions(mockArtifactRepository);
         },

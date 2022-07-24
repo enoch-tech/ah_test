@@ -5,14 +5,18 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../../fixtures/fixture_reader.dart';
 
 void main() {
-  final tArtifactModel =
-      ArtifactModel.fromJson(json.decode(fixture('artifact.json')));
-  test('should be a subclass of artifact entity', () async {
+  test('should pass for valid json', () async {
     //arrange
+    final tArtifactModel =
+        ArtifactModel.fromJson(json.decode(fixture('artifact.json')));
+    expect(tArtifactModel, isNotNull);
+  });
 
-    // act
+  test('should return object for dirty json', () async {
+    //arrange
+    final tArtifactModel =
+        ArtifactModel.fromJson(json.decode(fixture('artifact_dirty.json')));
 
-    // assert
-    expect(tArtifactModel, isA<ArtifactRepository>());
+    expect(tArtifactModel, isNotNull);
   });
 }
