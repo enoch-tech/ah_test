@@ -1,6 +1,5 @@
 import 'package:ah_test/core/constants/constants.dart';
 import 'package:ah_test/features/artifact_list/domain/entities/artifact_entity.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 
 class ArtifactDetailUi extends StatelessWidget {
