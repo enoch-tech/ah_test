@@ -66,20 +66,18 @@ class _ArtifactListViewControllerState
         });
         BlocProvider.of<ArtifactListCubit>(context)
             .getInitialArtifactList(_page);
-        await Future.delayed(const Duration(seconds: 0));
-        if (!mounted) {
-          return;
-        }
+        // await Future.delayed(const Duration(seconds: 0));
+
         _controller.finishRefresh();
         _controller.resetFooter();
       },
       onLoad: () async {
         BlocProvider.of<ArtifactListCubit>(context)
             .getPaginatedArtifactList(_page);
-        await Future.delayed(const Duration(seconds: 1));
-        if (!mounted) {
-          return;
-        }
+
+        // if (!mounted) {
+        //   return;
+        // }
         _controller.finishLoad(
             _count >= 10000 ? IndicatorResult.noMore : IndicatorResult.success);
       },

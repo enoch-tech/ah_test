@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-class ArtifactEntity extends Equatable {
+class ArtifactEntity extends Equatable implements Comparable {
   final String objectNumber;
   final String title;
   final String longTitle;
@@ -26,4 +26,9 @@ class ArtifactEntity extends Equatable {
 
   @override
   List<Object> get props => [objectNumber];
+
+  @override
+  int compareTo(other) {
+    return principalOrFirstMaker.compareTo(other.principalOrFirstMaker);
+  }
 }

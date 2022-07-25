@@ -12,4 +12,5 @@ class Constants {
   static const String loadingStateText = "Searching awesome art for you ❤";
   static const int artifactsPerPage = 10;
   static const String sortByArtist = "artist";
+  static const String chronologic = "chronologic";
 }

@@ -58,6 +58,9 @@ dependencies:
 
   http: ^0.13.4
 
+  #Section Header
+  sticky_grouped_list: ^2.0.0-nullsafety.2
+
 dev_dependencies:
 
   build_runner: ^2.2.0

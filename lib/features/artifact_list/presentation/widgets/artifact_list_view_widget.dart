@@ -1,7 +1,9 @@
 // ignore_for_file: library_private_types_in_public_api, must_be_immutable
 
 import 'package:ah_test/features/artifact_list/domain/entities/artifact_entity.dart';
+import 'package:ah_test/features/artifact_list/presentation/widgets/sticky_list.dart';
 import 'package:flutter/material.dart';
+import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 import '../../../artifact_detail/presentation/artifact_detail_ui.dart';
 
 class ArtifactListView extends StatefulWidget {
@@ -14,6 +16,7 @@ class ArtifactListView extends StatefulWidget {
 
 class _ArtifactListViewState extends State<ArtifactListView> {
   late Set<ArtifactEntity> _artifacts;
+
   @override
   void initState() {
     super.initState();
@@ -30,6 +33,24 @@ class _ArtifactListViewState extends State<ArtifactListView> {
     setState(() {
       _artifacts.addAll(widget.artifacts);
     });
+
+    //return StickyListView(artifacts: _artifacts.toList());
+
+    return ArtifactsListView(artifacts: _artifacts);
+  }
+}
+
+class ArtifactsListView extends StatelessWidget {
+  const ArtifactsListView({
+    Key? key,
+    required Set<ArtifactEntity> artifacts,
+  })  : _artifacts = artifacts,
+        super(key: key);
+
+  final Set<ArtifactEntity> _artifacts;
+
+  @override
+  Widget build(BuildContext context) {
     return ListView.builder(
       itemBuilder: (BuildContext context, int index) {
         return ArtifactRow(

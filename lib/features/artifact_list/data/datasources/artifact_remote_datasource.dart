@@ -27,7 +27,7 @@ class ArtifactRemoteDataSourceImpl implements ArtifactRemoteDataSource {
       'key': Constants.API_KEY,
       'p': page.toString(),
       'ps': count.toString(),
-      's': Constants.sortByArtist
+      's': Constants.chronologic
     };
     try {
       uri = Uri.parse(
