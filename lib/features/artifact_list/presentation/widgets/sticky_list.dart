@@ -1,6 +1,5 @@
 import 'dart:ffi';
 
-import 'package:ah_test/features/artifact_list/data/models/artifact_model.dart';
 import 'package:ah_test/features/artifact_list/domain/entities/artifact_entity.dart';
 import 'package:ah_test/features/artifact_list/presentation/widgets/artifact_row.dart';
 import 'package:flutter/material.dart';
