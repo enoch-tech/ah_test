@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../core/constants/constants.dart';
@@ -16,15 +14,15 @@ abstract class ArtifactRemoteDataSource {
 
 class ArtifactRemoteDataSourceImpl implements ArtifactRemoteDataSource {
   final http.Client client;
-  Uri uri;
 
-  ArtifactRemoteDataSourceImpl(this.uri, {required this.client});
+  ArtifactRemoteDataSourceImpl({required this.client});
   @override
   Future<List<ArtifactModel>> getRemoteData(int page, int count) =>
       _getArtifactsFromFromUrl(page, count);
 
   Future<List<ArtifactModel>> _getArtifactsFromFromUrl(
       int page, int count) async {
+    Uri uri;
     var queryParameters = {
       'key': Constants.API_KEY,
       'p': page.toString(),
@@ -35,7 +33,9 @@ class ArtifactRemoteDataSourceImpl implements ArtifactRemoteDataSource {
       uri = Uri.parse(
               Constants.BASE_URL + Constants.API_EN_COLLECTION) // parse string
           .replace(queryParameters: queryParameters);
-    } on Exception {}
+    } on Exception {
+      throw ServerException();
+    }
     final response = await client.get(
       uri,
       headers: {

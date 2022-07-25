@@ -1,13 +1,13 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:ah_test/core/constants/constants.dart';
 import 'package:ah_test/core/widgets/error_widget.dart';
 import 'package:ah_test/core/widgets/initial_widget.dart';
 import 'package:ah_test/core/widgets/loading_widget.dart';
-import 'package:ah_test/features/artifact_list/domain/usecases/get_artifacts_usecase.dart';
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/usecases/usecase.dart';
 import '../cubit/artifact_list_cubit.dart';
 import '../cubit/artifact_list_state.dart';
 import '../widgets/artifact_list_view_widget.dart';

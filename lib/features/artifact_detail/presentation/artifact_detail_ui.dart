@@ -28,7 +28,6 @@ class ArtifactDetailUi extends StatelessWidget {
                     return child;
                   }
                   return const Center(child: Text(Constants.loadingStateText));
-                  // You can use LinearProgressIndicator or CircularProgressIndicator instead
                 },
                 errorBuilder: (context, error, stackTrace) =>
                     const Text('Some errors occurred!'),

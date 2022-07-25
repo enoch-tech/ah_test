@@ -1,6 +1,4 @@
 import 'package:ah_test/features/artifact_list/domain/entities/artifact_entity.dart';
-import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
 // ignore: must_be_immutable
 class ArtifactModel extends ArtifactEntity {
