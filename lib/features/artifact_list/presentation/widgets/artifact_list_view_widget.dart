@@ -32,53 +32,72 @@ class _ArtifactListViewState extends State<ArtifactListView> {
     });
     return ListView.builder(
       itemBuilder: (BuildContext context, int index) {
-        return Card(
-          elevation: 0,
-          child: GestureDetector(
-            onTap: () {
-              //Perform your logic here
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ArtifactDetailUi(
-                    selectedArtifact: _artifacts.elementAt(index),
-                  ),
-                ),
-              );
-            },
-            child: Stack(
-              alignment: Alignment.center,
-              children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image:
-                          NetworkImage(_artifacts.elementAt(index).headerImage),
-                      fit: BoxFit.fitWidth,
-                      alignment: Alignment.center,
-                    ),
-                  ),
-                ), //Container
-                Positioned(
-                  width: MediaQuery.of(context).size.width,
-                  child: Text(
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                    textAlign: TextAlign.center,
-                    _artifacts.elementAt(index).title,
-                  ),
-                ),
-              ],
-            ),
-          ),
+        return ArtifactRow(
+          artifacts: _artifacts,
+          index: index,
         );
       },
       itemCount: _artifacts.length,
+    );
+  }
+}
+
+class ArtifactRow extends StatelessWidget {
+  const ArtifactRow({
+    Key? key,
+    required Set<ArtifactEntity> artifacts,
+    required int index,
+  })  : _artifacts = artifacts,
+        _index = index,
+        super(key: key);
+
+  final Set<ArtifactEntity> _artifacts;
+  final int _index;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 0,
+      child: GestureDetector(
+        onTap: () {
+          //Perform your logic here
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ArtifactDetailUi(
+                selectedArtifact: _artifacts.elementAt(_index),
+              ),
+            ),
+          );
+        },
+        child: Stack(
+          alignment: Alignment.center,
+          children: <Widget>[
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 80,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(_artifacts.elementAt(_index).headerImage),
+                  alignment: Alignment.center,
+                ),
+              ),
+            ), //Container
+            Positioned(
+              width: MediaQuery.of(context).size.width,
+              child: Text(
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                ),
+                textAlign: TextAlign.center,
+                _artifacts.elementAt(_index).title,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
