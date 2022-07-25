@@ -28,7 +28,6 @@ class ArtifactModel extends ArtifactEntity {
 
   factory ArtifactModel.fromJson(Map<String, dynamic> json) {
     // todo i want to put data checks while reading data.
-
     var artifact = ArtifactModel(
       objectNumber: json['objectNumber'] ?? "",
       title: json['title'] ?? "",

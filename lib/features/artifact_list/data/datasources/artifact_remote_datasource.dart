@@ -16,38 +16,38 @@ abstract class ArtifactRemoteDataSource {
 
 class ArtifactRemoteDataSourceImpl implements ArtifactRemoteDataSource {
   final http.Client client;
-  ArtifactRemoteDataSourceImpl({required this.client});
+  Uri uri;
+
+  ArtifactRemoteDataSourceImpl(this.uri, {required this.client});
   @override
   Future<List<ArtifactModel>> getRemoteData(int page, int count) =>
       _getArtifactsFromFromUrl(page, count);
 
   Future<List<ArtifactModel>> _getArtifactsFromFromUrl(
       int page, int count) async {
+    var queryParameters = {
+      'key': Constants.API_KEY,
+      'p': page.toString(),
+      'ps': count.toString(),
+      's': Constants.sortByArtist
+    };
     try {
-      var queryParameters = {
-        'key': Constants.API_KEY,
-        'p': page.toString(),
-        'ps': count.toString(),
-        's': Constants.sortByArtist
-      };
-      final Uri uri = Uri.parse(
+      uri = Uri.parse(
               Constants.BASE_URL + Constants.API_EN_COLLECTION) // parse string
           .replace(queryParameters: queryParameters);
+    } on Exception {}
+    final response = await client.get(
+      uri,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
 
-      final response = await client.get(
-        uri,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      );
-      if (response.statusCode == 200) {
-        return ArtifactModel.listFromJson(json.decode(response.body));
-      } else if (response.statusCode == 404) {
-        throw NotFoundException();
-      } else {
-        throw ServerException();
-      }
-    } on Exception {
+    if (response.statusCode == 200) {
+      return ArtifactModel.listFromJson(json.decode(response.body));
+    } else if (response.statusCode == 404) {
+      throw NotFoundException();
+    } else {
       throw ServerException();
     }
   }
