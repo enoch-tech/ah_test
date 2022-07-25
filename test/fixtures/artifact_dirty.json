@@ -1,0 +1,31 @@
+{
+    "links": {
+        "self": "http://www.rijksmuseum.nl/api/nl/collection/SK-A-3580",
+        "web": "http://www.rijksmuseum.nl/nl/collectie/SK-A-3580"
+    },
+    "title": "De Singelbrug bij de Paleisstraat in Amsterdam",
+    "hasImage": true,
+    "principalOrFirstMaker": "George Hendrik Breitner",
+    "longTitle": "De Singelbrug bij de Paleisstraat in Amsterdam, George Hendrik Breitner, 1898",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+        "guid": "cd15e2fa-b1f6-41f4-9e9e-c2ca87abcca3",
+        "offsetPercentageX": 0,
+        "offsetPercentageY": 0,
+        "width": 2880,
+        "height": 1897,
+        "url": "https://lh3.googleusercontent.com/Bawo7r1nPZV6sJ4OHZJHdKV_4Ky59vquAR7KoUXcNZgx9fqTaOW-QaOM9qoyYhOTAopzjt9OIfW06RMwa-9eJW9KjQw=s0"
+    },
+    "headerImage": {
+        "guid": "fef39f74-9783-44c9-acae-69eac3a76b01",
+        "offsetPercentageX": 0,
+        "offsetPercentageY": 0,
+        "width": 1920,
+        "height": 460,
+        "url": "https://lh3.googleusercontent.com/jR6y5a8lFvgYe37WxLPQJZTjBAaBB6aIFYMsFw9gGP1y69TltkVQdWQVoZhSyGN9ZnPKR5taEJPbGhUBSDxlOmNqoyI=s0"
+    },
+    "productionPlaces": [
+        "Amsterdam"
+    ]
+}
